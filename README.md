@@ -330,3 +330,18 @@ Więcej endpoint'ów się pojawi w ciagu projektu.
 
 
 ---
+
+## Schemat Bazy Danych (ERD)
+
+Wstępny diagram struktury bazy danych. Z czasem będą tu dodawane kolejne relacje.
+
+```mermaid
+erDiagram
+    users {
+        int id PK
+        string email UK
+        string password
+        timestamp created_at
+        timestamp updated_at
+    }
+```

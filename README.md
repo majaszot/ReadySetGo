@@ -1,9 +1,13 @@
 # ReadySetGo
 Aplikacja - System Rezerwacji Usług Sportowych
 
-> System stworzony dla małych studiów fitness i trenerów, automatyzujący proces rezerwacji i zarządzania grafikiem.
+> ReadySetGo to kompleksowa aplikacja mobilna wspierająca zdrowy tryb życia, aktywność fizyczną oraz integrację sportową. Pomaga użytkownikom w osiąganiu ich celów sylwetkowych i kondycyjnych, a także ułatwia organizację wspólnych treningów.
 
-ReadySetGo pozwala klientom na szybką rezerwację treningów, a administratorom oferuje przejrzysty panel do zarządzania wizytami. Aplikacja rozwiązuje problem błędów w zapisach, oszczędzając czas trenerom i ułatwiając dostęp użytkownikom.
+## Główne funkcje aplikacji
+* **Personalizacja i śledzenie postępów:** Konfiguracja profilu pod konkretne cele (np. utrata wagi, budowa masy mięśniowej), dobór poziomu zaawansowania oraz monitorowanie statystyk ciała.
+* **Dziennik treningowy:** Wbudowany kalendarz pozwalający na planowanie przyszłych aktywności i rejestrowanie odbytych treningów.
+* **Aktywności i Mapa:** Wybór spośród wielu dyscyplin sportowych oraz znajdowanie wydarzeń i miejsc do gry w najbliższej okolicy za pomocą interaktywnej mapy.
+* **Dobieranie przeciwników:** Możliwość tworzenia spotkań sportowych i szukania partnerów do gry z uwzględnieniem ich poziomu zaawansowania (system ELO).
 
 **Odznaki**:
 

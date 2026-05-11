@@ -1,0 +1,28 @@
+name: Deploy to Staging
+
+on:
+  push:
+    branches:
+      - staging
+
+jobs:
+  deploy:
+    name: Trigger Railway Staging Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Deploy to Railway staging
+        run: |
+          curl -X POST \
+            -H "Authorization: Bearer ${{ secrets.RAILWAY_TOKEN }}" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "query": "mutation { deploymentCreate(input: { serviceId: \"${{ secrets.RAILWAY_STAGING_SERVICE_ID }}\", environmentId: \"${{ secrets.RAILWAY_STAGING_ENVIRONMENT_ID }}\" }) { id status } }"
+            }' \
+            https://backboard.railway.app/graphql/v2
+
+      - name: Notify success
+        run: echo "Staging deploy triggered successfully"

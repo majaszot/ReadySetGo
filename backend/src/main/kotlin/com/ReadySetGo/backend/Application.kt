@@ -16,10 +16,19 @@ fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
 fun Application.module() {
 
-    // ── Load .env ────────────────────────────────────────────────
-    val dotenv = dotenv {
-        directory = "../"
-        ignoreIfMissing = false
+    // ── Load environment ─────────────────────────────────────────
+    val isRailway = System.getenv("RAILWAY_ENVIRONMENT") != null
+
+    val getEnv: (String) -> String = { key ->
+        if (isRailway) {
+            System.getenv(key) ?: throw IllegalStateException("Missing env var: $key")
+        } else {
+            val env = dotenv {
+                directory = "../"
+                ignoreIfMissing = false
+            }
+            env[key]
+        }
     }
 
     // ── Plugins ──────────────────────────────────────────────────
@@ -29,23 +38,21 @@ fun Application.module() {
 
     // ── Database ─────────────────────────────────────────────────
     val dataSource = HikariDataSource(HikariConfig().apply {
-        jdbcUrl         = "jdbc:postgresql://${dotenv["DB_HOST"]}:${dotenv["DB_PORT"]}/${dotenv["DB_NAME"]}"
-        username        = dotenv["DB_USER"]
-        password        = dotenv["DB_PASSWORD"]
+        jdbcUrl         = "jdbc:postgresql://${getEnv("DB_HOST")}:${getEnv("DB_PORT")}/${getEnv("DB_NAME")}"
+        username        = getEnv("DB_USER")
+        password        = getEnv("DB_PASSWORD")
         driverClassName = "org.postgresql.Driver"
         maximumPoolSize = 5
     })
 
-    log.info("Database pool initialized → ${dataSource.jdbcUrl}")
-
     // ── Services ─────────────────────────────────────────────────
     val userRepository = UserRepository(dataSource)
     val userService = UserService(
-        userRepository   = userRepository,
-        jwtSecret        = dotenv["JWT_SECRET"],
-        jwtIssuer        = dotenv["JWT_ISSUER"],
-        jwtAudience      = dotenv["JWT_AUDIENCE"],
-        jwtExpirationMs  = dotenv["JWT_EXPIRATION_MS"].toLong()
+        userRepository  = userRepository,
+        jwtSecret       = getEnv("JWT_SECRET"),
+        jwtIssuer       = getEnv("JWT_ISSUER"),
+        jwtAudience     = getEnv("JWT_AUDIENCE"),
+        jwtExpirationMs = getEnv("JWT_EXPIRATION_MS").toLong()
     )
 
     // ── Routes ───────────────────────────────────────────────────

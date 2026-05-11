@@ -31,7 +31,12 @@ fun Application.module() {
         }
     }
 
-// ── Database ─────────────────────────────────────────────────
+    // ── Plugins ──────────────────────────────────────────────────
+    install(ContentNegotiation) {
+        json()
+    }
+
+    // ── Database ─────────────────────────────────────────────────
     val dataSource = HikariDataSource(HikariConfig().apply {
         jdbcUrl         = "jdbc:postgresql://${getEnv("DB_HOST")}:${getEnv("DB_PORT")}/${getEnv("DB_NAME")}"
         username        = getEnv("DB_USER")
@@ -40,7 +45,7 @@ fun Application.module() {
         maximumPoolSize = 5
     })
 
-// ── Services ─────────────────────────────────────────────────
+    // ── Services ─────────────────────────────────────────────────
     val userRepository = UserRepository(dataSource)
     val userService = UserService(
         userRepository  = userRepository,

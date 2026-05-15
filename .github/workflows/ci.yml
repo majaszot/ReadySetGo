@@ -33,6 +33,9 @@ jobs:
           key: gradle-${{ hashFiles('**/*.gradle.kts') }}
           restore-keys: gradle-
 
+      - name: Make gradlew executable
+        run: chmod +x gradlew
+
       - name: Build backend
         run: ./gradlew shadowJar --no-daemon
 
@@ -64,6 +67,9 @@ jobs:
             ~/.gradle/wrapper
           key: gradle-${{ hashFiles('**/*.gradle.kts') }}
           restore-keys: gradle-
+
+      - name: Make gradlew executable
+        run: chmod +x gradlew
 
       - name: Build frontend
         run: ./gradlew assembleDebug --no-daemon

@@ -87,7 +87,7 @@ fun GlassyBottomBar(
                     shape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp)
                 )
         )
-        
+
         Row(
             modifier = Modifier
                 .fillMaxWidth()

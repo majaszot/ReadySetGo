@@ -1,9 +1,13 @@
 # ReadySetGo
 Aplikacja - System Rezerwacji Usług Sportowych
 
-> *TBD*
+> ReadySetGo to kompleksowa aplikacja mobilna wspierająca zdrowy tryb życia, aktywność fizyczną oraz integrację sportową. Pomaga użytkownikom w osiąganiu ich celów sylwetkowych i kondycyjnych, a także ułatwia organizację wspólnych treningów.
 
-*TBD*
+## Główne funkcje aplikacji
+* **Personalizacja i śledzenie postępów:** Konfiguracja profilu pod konkretne cele (np. utrata wagi, budowa masy mięśniowej), dobór poziomu zaawansowania oraz monitorowanie statystyk ciała.
+* **Dziennik treningowy:** Wbudowany kalendarz pozwalający na planowanie przyszłych aktywności i rejestrowanie odbytych treningów.
+* **Aktywności i Mapa:** Wybór spośród wielu dyscyplin sportowych oraz znajdowanie wydarzeń i miejsc do gry w najbliższej okolicy za pomocą interaktywnej mapy.
+* **Dobieranie przeciwników:** Możliwość tworzenia spotkań sportowych i szukania partnerów do gry z uwzględnieniem ich poziomu zaawansowania (system ELO).
 
 **Odznaki**:
 
@@ -156,6 +160,7 @@ ReadySetGo/
 │   │       │   ├── ui/           # (Przykłady UI)
 │   │       │   │   ├── theme/
 │   │       │   │   │	  └── Typography.kt/   # Czcionki i typografia
+│   │       │   │   ├── theme/        # Theme.kt 
 │   │       │   │   ├── home/         # HomeFragment + HomeViewModel
 │   │       │   │   └── detail/       # DetailFragment + DetailViewModel
 │   │       │   ├── di/               # Hilt modules
@@ -326,10 +331,20 @@ Więcej endpoint'ów się pojawi w ciagu projektu.
 
 ## Paleta kolorów
 
-| Token | Kolor | Zastosowanie |
-|-------|-------|--------------|
-| *TBD* | *TBD* | *TBD*        |
+| Token          | Kolor (Hex)       | Zastosowanie                               |
+|----------------|-------------------|--------------------------------------------|
+| `DarkNavy`     | #192126           | Główny kolor aplikacji (Primary), teksty   |
+| `LimeGreen`    | #BBF246           | Główne akcenty, przyciski (Secondary)      |
+| `Orange`       | #F97316           | Dodatkowe wyróżnienia (Tertiary)           |
+| `Sand`/`Brown` | #C1A188 / #544026 | Kolory uzupełniające marki                 |
+| `ErrorRed`     | #E53935           | Komunikaty o błędach i ostrzeżenia         |
+| `InputGray`    | #F0F0F0           | Tła pól tekstowych (Surface)               |
 
+---
+
+## Schemat Bazy Danych (ERD)
+
+Wstępny diagram struktury bazy danych. Z czasem będą tu dodawane kolejne relacje.
 
 ---
 
@@ -342,3 +357,4 @@ Więcej endpoint'ów się pojawi w ciagu projektu.
 | `text16`     | 16sp    | Normal   | Główny tekst czytany, akapity    |
 | `text14`     | 14sp    | Normal   | Mniejszy tekst, opisy pomocnicze |
 | `label16`    | 16sp    | SemiBold | Tekst przycisków, ważne etykiety |
+![Diagram ERD](erd.png)

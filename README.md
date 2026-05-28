@@ -335,10 +335,10 @@ Więcej endpoint'ów się pojawi w ciagu projektu.
 
 ## Typografia
 
-| Styl (Token)     | Rozmiar | Waga     | Zastosowanie                     |
-|------------------|---------|----------|----------------------------------|
-| `headlineLarge`  | 28sp    | Bold     | Główne nagłówki, duże tytuły     |
-| `headlineMedium` | 24sp    | Bold     | Mniejsze nagłówki, podtytuły     |
-| `bodyLarge`      | 16sp    | Normal   | Główny tekst czytany, akapity    |
-| `bodyMedium`     | 14sp    | Normal   | Mniejszy tekst, opisy pomocnicze |
-| `labelLarge`     | 16sp    | SemiBold | Tekst przycisków, ważne etykiety |
+| Styl (Token) | Rozmiar | Waga     | Zastosowanie                     |
+|--------------|---------|----------|----------------------------------|
+| `header28`   | 28sp    | Bold     | Główne nagłówki, duże tytuły     |
+| `header24`   | 24sp    | Bold     | Mniejsze nagłówki, podtytuły     |
+| `text16`     | 16sp    | Normal   | Główny tekst czytany, akapity    |
+| `text14`     | 14sp    | Normal   | Mniejszy tekst, opisy pomocnicze |
+| `label16`    | 16sp    | SemiBold | Tekst przycisków, ważne etykiety |

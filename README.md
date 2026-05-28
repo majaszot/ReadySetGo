@@ -158,6 +158,8 @@ ReadySetGo/
 │   │       │   │   ├── repository/   # Repository pattern (bridge VM ↔ API)
 │   │       │   │   └── model/        # DTOs / UI models
 │   │       │   ├── ui/           # (Przykłady UI)
+│   │       │   │   ├── theme/
+│   │       │   │   │	  └── Typography.kt/   # Czcionki i typografia
 │   │       │   │   ├── theme/        # Theme.kt 
 │   │       │   │   ├── home/         # HomeFragment + HomeViewModel
 │   │       │   │   └── detail/       # DetailFragment + DetailViewModel
@@ -344,4 +346,15 @@ Więcej endpoint'ów się pojawi w ciagu projektu.
 
 Wstępny diagram struktury bazy danych. Z czasem będą tu dodawane kolejne relacje.
 
+---
+
+## Typografia
+
+| Styl (Token) | Rozmiar | Waga     | Zastosowanie                     |
+|--------------|---------|----------|----------------------------------|
+| `header28`   | 28sp    | Bold     | Główne nagłówki, duże tytuły     |
+| `header24`   | 24sp    | Bold     | Mniejsze nagłówki, podtytuły     |
+| `text16`     | 16sp    | Normal   | Główny tekst czytany, akapity    |
+| `text14`     | 14sp    | Normal   | Mniejszy tekst, opisy pomocnicze |
+| `label16`    | 16sp    | SemiBold | Tekst przycisków, ważne etykiety |
 ![Diagram ERD](erd.png)

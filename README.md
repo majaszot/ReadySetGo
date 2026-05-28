@@ -345,6 +345,8 @@ Więcej endpoint'ów się pojawi w ciagu projektu.
 
 Wstępny diagram struktury bazy danych. Z czasem będą tu dodawane kolejne relacje.
 
+![Diagram ERD](erd.png)
+
 ---
 
 ## Typografia
@@ -356,4 +358,4 @@ Wstępny diagram struktury bazy danych. Z czasem będą tu dodawane kolejne rela
 | `text16`     | 16sp    | Normal   | Główny tekst czytany, akapity    |
 | `text14`     | 14sp    | Normal   | Mniejszy tekst, opisy pomocnicze |
 | `label16`    | 16sp    | SemiBold | Tekst przycisków, ważne etykiety |
-![Diagram ERD](erd.png)
+

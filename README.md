@@ -330,3 +330,9 @@ Więcej endpoint'ów się pojawi w ciagu projektu.
 
 
 ---
+
+## Schemat Bazy Danych (ERD)
+
+Wstępny diagram struktury bazy danych. Z czasem będą tu dodawane kolejne relacje.
+
+![Diagram ERD](erd.png)

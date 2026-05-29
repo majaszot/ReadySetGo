@@ -169,7 +169,7 @@ ReadySetGo/
 │   │           ├── layout/
 │   │           ├── navigation/
 │   │           └── values/
-│   └── build.gradle.kts│
+│   └── build.gradle.kts
 ├── shared/           # Shared DTOs between backend and frontend
 │   └── src/main/kotlin/com/ReadySetGo/shared/dto/
 │

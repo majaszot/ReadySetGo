@@ -149,28 +149,27 @@ ReadySetGo/
 │   │           └── logback.xml
 │   └── build.gradle.kts
 │
-├── frontend/         # Android app (MVVM + Hilt + Retrofit)
+├── frontend/          # Android app (MVVM + Hilt + Retrofit)
 │   ├── app/
 │   │   └── src/main/
 │   │       ├── kotlin/com/ReadySetGo/frontend/
 │   │       │   ├── data/
-│   │       │   │   ├── remote/       # Retrofit API interfaces
-│   │       │   │   ├── repository/   # Repository pattern (bridge VM ↔ API)
-│   │       │   │   └── model/        # DTOs / UI models
-│   │       │   ├── ui/           # (Przykłady UI)
+│   │       │   │   ├── remote/        # Retrofit API interfaces
+│   │       │   │   ├── repository/    # Repository pattern (bridge VM ↔ API)
+│   │       │   │   └── model/         # DTOs / UI models
+│   │       │   ├── ui/            # (Przykłady UI)
 │   │       │   │   ├── theme/
-│   │       │   │   │	  └── Typography.kt/   # Czcionki i typografia
-│   │       │   │   ├── theme/        # Theme.kt 
-│   │       │   │   ├── home/         # HomeFragment + HomeViewModel
-│   │       │   │   └── detail/       # DetailFragment + DetailViewModel
-│   │       │   ├── di/               # Hilt modules
-│   │       │   └── utils/            # Extensions, constants
+│   │       │   │   │   ├── Theme.kt
+│   │       │   │   │   └── Typography.kt  # Czcionki i typografia
+│   │       │   │   ├── home/          # HomeFragment + HomeViewModel
+│   │       │   │   └── detail/        # DetailFragment + DetailViewModel
+│   │       │   ├── di/                # Hilt modules
+│   │       │   └── utils/             # Extensions, constants
 │   │       └── res/
 │   │           ├── layout/
 │   │           ├── navigation/
 │   │           └── values/
 │   └── build.gradle.kts
-│
 ├── shared/           # Shared DTOs between backend and frontend
 │   └── src/main/kotlin/com/ReadySetGo/shared/dto/
 │
@@ -346,6 +345,8 @@ Więcej endpoint'ów się pojawi w ciagu projektu.
 
 Wstępny diagram struktury bazy danych. Z czasem będą tu dodawane kolejne relacje.
 
+![Diagram ERD](erd.png)
+
 ---
 
 ## Typografia
@@ -357,4 +358,4 @@ Wstępny diagram struktury bazy danych. Z czasem będą tu dodawane kolejne rela
 | `text16`     | 16sp    | Normal   | Główny tekst czytany, akapity    |
 | `text14`     | 14sp    | Normal   | Mniejszy tekst, opisy pomocnicze |
 | `label16`    | 16sp    | SemiBold | Tekst przycisków, ważne etykiety |
-![Diagram ERD](erd.png)
+

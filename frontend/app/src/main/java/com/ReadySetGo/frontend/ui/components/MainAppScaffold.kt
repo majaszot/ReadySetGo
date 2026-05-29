@@ -27,7 +27,7 @@ import androidx.compose.ui.unit.sp
  *
  * Komponent integruje stały, górny pasek nawigacji (TopBar) z zewnętrznym, szklanym
  * paskiem dolnym [GlassyBottomBar]. W strukturze paska górnego wykorzystywany jest
- * bezpośrednio Twój dedykowany komponent [HighlightedTitle].
+ * bezpośrednio komponent [HighlightedTitle].
  *
  * @param currentTab Identyfikator aktualnie wybranej i aktywnej zakładki systemu (np. "Home", "Map", "Start", "Journal", "Profile").
  * @param onTabSelected Callback wywoływany przy zmianie aktywnej zakładki dolnego paska nawigacji.
@@ -137,8 +137,6 @@ fun MainAppScaffold(
             }
         }
 
-        // BEZPOŚREDNIE WYWOŁANIE TWOJEGO KOMPONENTU GLASSY BOTTOM BAR
-        // Umieszczony na samym wierzchu stosu warstw Boxa, wyrównany do dolnej krawędzi
         GlassyBottomBar(
             currentTab = currentTab,
             onTabSelected = onTabSelected,
@@ -158,7 +156,7 @@ fun MainAppScaffoldPreview() {
         onBackClick = {},
         onStatsClick = {}
     ) { paddingValues ->
-        // Reprezentacja wizualna przykładowego przewijanego ekranu wewnątrz Scaffolda
+        // Tu elementy ekranu
         Column(
             modifier = Modifier
                 .fillMaxSize()

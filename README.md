@@ -130,52 +130,51 @@ PostgreSQL (database)
 
 ```
 ReadySetGo/
-├── backend/          # Ktor REST API + JDBC + PostgreSQL
-│   ├── docker/       # Docker Compose + database setup
-│   │   ├── docker-compose.yml  # PostgreSQL 16 container
-│   │   ├── seed.ps1            # Seed database
-│   │   ├── start-db.ps1        # Start database
-│   │   └── stop-db.ps1         # Stop database       
+├── backend/               # Ktor REST API + JDBC + PostgreSQL
+│   ├── docker/            # Docker Compose + database setup
+│   │   └── docker-compose.yml # PostgreSQL 16 container
+│   ├── scripts/           # Skrypty narzędziowe bazy danych
+│   │   ├── seed.ps1       # Seed database
+│   │   ├── start-db.ps1   # Start database
+│   │   └── stop-db.ps1    # Stop database
 │   ├── src/
 │   │   └── main/
 │   │       ├── kotlin/com/ReadySetGo/backend/
-│   │       │   ├── config/       # DB config, HikariCP connection pool
-│   │       │   ├── controller/   # REST endpoints
-│   │       │   ├── repository/   # JDBC queries
-│   │       │   ├── model/        # Domain models
-│   │       │   └── service/      # Business logic
+│   │       │   ├── config/        # DB config, HikariCP connection pool
+│   │       │   ├── controller/    # REST endpoints
+│   │       │   ├── model/         # Domain models
+│   │       │   ├── repository/    # JDBC queries
+│   │       │   ├── service/       # Business logic
+│   │       │   ├── Application.kt # Główny punkt wejścia
+│   │       │   └── Seeder.kt      # Zasilanie bazy początkowymi danymi
 │   │       └── resources/
 │   │           ├── application.conf
 │   │           └── logback.xml
-│   └── build.gradle.kts
+│   ├── build.gradle.kts
+│   ├── Dockerfile         # Konfiguracja obrazu Docker
+│   └── railway.toml       # Konfiguracja deploymentu (Railway)
 │
-├── frontend/          # Android app (MVVM + Hilt + Retrofit)
-│   ├── app/
-│   │   └── src/main/
-│   │       ├── kotlin/com/ReadySetGo/frontend/
-│   │       │   ├── data/
-│   │       │   │   ├── remote/        # Retrofit API interfaces
-│   │       │   │   ├── repository/    # Repository pattern (bridge VM ↔ API)
-│   │       │   │   └── model/         # DTOs / UI models
-│   │       │   ├── ui/            # (Przykłady UI)
-│   │       │   │   ├── theme/
-│   │       │   │   │   ├── Theme.kt
-│   │       │   │   │   └── Typography.kt  # Czcionki i typografia
-│   │       │   │   ├── home/          # HomeFragment + HomeViewModel
-│   │       │   │   └── detail/        # DetailFragment + DetailViewModel
-│   │       │   ├── di/                # Hilt modules
-│   │       │   └── utils/             # Extensions, constants
-│   │       └── res/
-│   │           ├── layout/
-│   │           ├── navigation/
-│   │           └── values/
-│   └── build.gradle.kts
-├── shared/           # Shared DTOs between backend and frontend
+├── frontend/              # Android app (MVVM + Hilt + Retrofit)
+│   └── app/
+│       ├── src/main/
+│       │   ├── java/com/ReadySetGo/frontend/
+│       │   │   ├── data/          # Retrofit API + Repository + Models
+│       │   │   ├── di/            # Hilt modules
+│       │   │   ├── ui/            # UI (Theme, Fragments, ViewModels)
+│       │   │   ├── utils/         # Extensions, constants
+│       │   │   ├── MainActivity.kt
+│       │   │   └── MainApplicaiton.kt
+│       │   ├── res/               # Zasoby (layout, values itp.)
+│       │   └── AndroidManifest.xml
+│       ├── build.gradle.kts
+│       └── proguard-rules.pro
+│
+├── shared/                # Shared DTOs between backend and frontend
 │   └── src/main/kotlin/com/ReadySetGo/shared/dto/
 │
-├── .env.example      # Template dla zmiennych środowiskowych
+├── .env.example           # Template dla zmiennych środowiskowych
 ├── .gitignore
-├── d1.png            # Diagram przykładu użycia
+├── d1.png                 # Diagram przykładu użycia
 └── README.md
 ```
 

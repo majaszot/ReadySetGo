@@ -13,12 +13,13 @@ Aplikacja - System Rezerwacji Usług Sportowych
 
 ![Platform](https://img.shields.io/badge/platform-Android-green)
 ![Kotlin](https://img.shields.io/badge/Kotlin-100%25-blue)
-![Kotlin](https://img.shields.io/badge/Kotlin-1.9.22-7F52FF?style=flat&logo=kotlin&logoColor=white)
+![Kotlin](https://img.shields.io/badge/Kotlin-2.0.0-7F52FF?style=flat&logo=kotlin&logoColor=white)
 ![Ktor](https://img.shields.io/badge/Ktor-2.3.12-087CFA?style=flat&logo=ktor&logoColor=white)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-4169E1?style=flat&logo=postgresql&logoColor=white)
 ![Docker](https://img.shields.io/badge/Docker-ready-2496ED?style=flat&logo=docker&logoColor=white)
 ![Android](https://img.shields.io/badge/Android-API_26+-3DDC84?style=flat&logo=android&logoColor=white)
 ![Gradle](https://img.shields.io/badge/Gradle-9.1.0-02303A?style=flat&logo=gradle&logoColor=white)
+![Railway](https://img.shields.io/badge/Railway-deployed-0B0D0E?style=flat&logo=railway&logoColor=white)
 
 ---
 
@@ -28,7 +29,7 @@ Aplikacja - System Rezerwacji Usług Sportowych
 
 Małe studia fitness i trenerzy tracą czas na ręczne odpisywanie na wiadomości i telefony w sprawie zapisów. Klienci rezygnują z usług, gdy nie mogą sprawdzić dostępności terminu "tu i teraz" (np. późno wieczorem), co powoduje:
 
-* próba 
+* próba
 * brak kontroli nad liczbą miejsc,
 * błędy w zapisach,
 * trudności w zarządzaniu grafikiem,
@@ -94,8 +95,9 @@ Małe studia fitness i trenerzy tracą czas na ręczne odpisywanie na wiadomośc
 | **fix**      | Naprawa błędu.                                                             |
 | **docs**     | Zmiany w dokumentacji (readme, javadoc).                                   |
 | **style**    | Zmiany formatowania, brakujące średniki, itd. (nie wpływa na logikę kodu). |
-| **refactor** | Zmiana kodu, która ani nie naprawia błędu, ani nie dodaje funkcji.                                                                          |
-| **chore**    | Zmiany w procesie budowania, narzędziach pomocniczych.                       |
+| **refactor** | Zmiana kodu, która ani nie naprawia błędu, ani nie dodaje funkcji.         |
+| **chore**    | Zmiany w procesie budowania, narzędziach pomocniczych.                     |
+| **ci**       | Zmiany w konfiguracji CI/CD, GitHub Actions, skryptach deploymentu.        |
 
 
 ---
@@ -130,12 +132,19 @@ PostgreSQL (database)
 
 ```
 ReadySetGo/
+├── .github/
+│   └── workflows/
+│       ├── ci.yml                  # Build + testy na PR
+│       └── deploy-staging.yml      # Auto-deploy na staging po merge'u
 ├── backend/          # Ktor REST API + JDBC + PostgreSQL
 │   ├── docker/       # Docker Compose + database setup
 │   │   ├── docker-compose.yml  # PostgreSQL 16 container
 │   │   ├── seed.ps1            # Seed database
 │   │   ├── start-db.ps1        # Start database
-│   │   └── stop-db.ps1         # Stop database       
+│   │   └── stop-db.ps1         # Stop database
+│   ├── scripts/      # Skrypty deploymentu
+│   │   ├── deploy-staging.ps1  # Manualny deploy na staging (Windows)
+│   │   └── deploy-staging.sh   # Manualny deploy na staging (Linux/Mac)
 │   ├── src/
 │   │   └── main/
 │   │       ├── kotlin/com/ReadySetGo/backend/
@@ -147,6 +156,8 @@ ReadySetGo/
 │   │       └── resources/
 │   │           ├── application.conf
 │   │           └── logback.xml
+│   ├── Dockerfile        # Docker image dla Railway'a
+│   ├── railway.toml      # Konfiguracja Railway'a
 │   └── build.gradle.kts
 │
 ├── frontend/          # Android app (MVVM + Hilt + Retrofit)
@@ -157,7 +168,7 @@ ReadySetGo/
 │   │       │   │   ├── remote/        # Retrofit API interfaces
 │   │       │   │   ├── repository/    # Repository pattern (bridge VM ↔ API)
 │   │       │   │   └── model/         # DTOs / UI models
-│   │       │   ├── ui/            # (Przykłady UI)
+│   │       │   ├── ui/
 │   │       │   │   ├── theme/
 │   │       │   │   │   ├── Theme.kt
 │   │       │   │   │   └── Typography.kt  # Czcionki i typografia
@@ -197,6 +208,7 @@ TBD
 | **IntelliJ IDEA**  | Backend development                            |
 | **Android Studio** | Frontend development                           |
 | **Docker Desktop** | Startowanie bazy PostgreSQL lokalnie           |
+| **Railway**        | Hosting backend (staging + production)         |
 | **GitHub**         | Główne repozytorium projektu / kontrola wersji |
 | **Jira**           | Organizacja pracy zespołu                      |
 
@@ -209,14 +221,14 @@ Otwórz oba IDEs obok siebie — IntelliJ dla `backend/`, Android Studio dla `fr
 | Backend       | **Ktor 2.x (Netty)**              |
 | DB Bridge     | **JDBC** + **HikariCP**           |
 | Database      | **PostgreSQL 16 (Docker)**        |
-| Android UI    | **Fragments** + **ViewBinding**   |
+| Android UI    | **Jetpack Compose**               |
 | Architecture  | **MVVM** + **Repository pattern** |
 | DI            | **Hilt**                          |
 | HTTP Client   | **Retrofit 2** + **OkHttp**       |
 | Async         | **Coroutines** + **StateFlow**    |
 | Repository    | **GitHub**                        |
 | Workflow      | **Jira**                          |
-| DB Encryption | **JWT** + **BCrypt**              |
+| Authenticate  | **JWT** + **BCrypt**              |
 
 ---
 
@@ -277,35 +289,40 @@ curl.exe http://localhost:8080/health
 2. Poczekaj na Gradle sync
 3. Połącz się do urządzenia lub wystartuj emulator.
 4. Kliknij **Run ▶️** lub naciśnij `Shift+F10`
-   
+
 Aplikacja łączy się do `http://10.0.2.2:8080` co przekierowuje ją na lokalny backend.
 
 ---
 
 ## Zmienne środowiskowe .env
 
-W `.env.example` zawarte są wszystkie wymagane zmienne środowiskowe. 
+W `.env.example` zawarte są wszystkie wymagane zmienne środowiskowe.
 
 **Nigdy nie dodawaj do commit'a `.env`!**
 
-| Zmienna            | Domyślna wartość | Opis                   |
-|--------------------|------------------|------------------------|
-| DB_HOST            | localhost        | PostgreSQL host        |
-| DB_PORT            | 5432             | PostgreSQL port        |
-| DB_NAME            | db_name          | Nazwa bazy danych      |
-| DB_USER            | db_user          | Użytkownik bazy danych |
-| DB_PASSWORD        | db_password      | Hasło bazy danych      |
-| KTOR_PORT          | 8080             | Backend server port    |
-| JWT_SECRET         | abcd1234         | Sekret JWT             |
-| JWT_ISSUER         | rsg_issuer       | Nazwa issuer'a JWT     |
-| JWT_AUDIENCE       | rsg_users        | Nazwa audiencji JWT    |
-| JWT_EXPIRATION_MS  | 86400000         | Czas wygaśnięcia JWT   |
+| Zmienna                           | Domyślna wartość | Opis                                   |
+|-----------------------------------|------------------|----------------------------------------|
+| DB_HOST                           | localhost        | PostgreSQL host                        |
+| DB_PORT                           | 5432             | PostgreSQL port                        |
+| DB_NAME                           | db_name          | Nazwa bazy danych                      |
+| DB_USER                           | db_user          | Użytkownik bazy danych                 |
+| DB_PASSWORD                       | db_password      | Hasło bazy danych                      |
+| KTOR_PORT                         | 8080             | Backend server port                    |
+| JWT_SECRET                        | abcd1234         | Sekret JWT                             |
+| JWT_ISSUER                        | rsg_issuer       | Nazwa issuer'a JWT                     |
+| JWT_AUDIENCE                      | rsg_users        | Nazwa audiencji JWT                    |
+| JWT_EXPIRATION_MS                 | 86400000         | Czas wygaśnięcia JWT                   |
+| RAILWAY_TOKEN                     |                  | Twój osobisty token Railway API        |
+| RAILWAY_STAGING_SERVICE_ID        |                  | ID serwisu backendowego na staging'u   |
+| RAILWAY_STAGING_ENVIRONMENT_ID    |                  | ID środowiska staging'u na Railway'u   |
+| RAILWAY_PRODUCTION_SERVICE_ID     |                  | ID serwisu backendowego na produkcji   |
+| RAILWAY_PRODUCTION_ENVIRONMENT_ID |                  | ID środowiska produkcji na Railway'u   |
 
 ---
 
 ## Docker
 
-Baza danych jest zarządzana poprzez Docker Compose. 
+Baza danych jest zarządzana poprzez Docker Compose.
 Używaj podanych skryptów zamiast surowych komend `docker compose`.
 One automatycznie ustawiają ścieżkę do pliku `.env`.
 
@@ -314,6 +331,75 @@ One automatycznie ustawiają ścieżkę do pliku `.env`.
 | `backend/docker/start-db.ps1` | Wystartuj kontener PostgreSQL       |
 | `backend/docker/stop-db.ps1`  | Zatrzymaj kontener PostgreSQL       |
 | `backend/docker/seed.ps1`     | Seeduje testowe dane do bazy danych |
+
+---
+
+## CI/CD
+
+Projekt używa GitHub Actions do automatycznego budowania i deploymentu.
+
+### Workflows
+
+| Workflow               | Wyzwalacz                  | Działanie                                     |
+|------------------------|----------------------------|-----------------------------------------------|
+| `ci.yml`               | PR do `staging` lub `main` | Buduje backend i frontend, uruchamia testy    |
+| `deploy-staging.yml`   | Push do `staging`          | Triggeruje redeploy na Railway staging        |
+
+### Flow pracy zespołu
+
+```
+feature/nazwa-zadania
+        ↓ PR → staging
+CI sprawdza build + testy
+        ↓ merge
+GitHub Actions triggeruje Railway deploy
+        ↓ weryfikacja
+PR staging → main
+        ↓ merge
+Railway deployuje na produkcję (manualnie)
+```
+
+### Manualne deployowanie na staging
+
+```powershell
+cd backend/scripts
+.\deploy-staging.ps1
+```
+
+Wymaga zmiennych `RAILWAY_TOKEN`, `RAILWAY_STAGING_SERVICE_ID`, `RAILWAY_STAGING_ENVIRONMENT_ID` w `.env`.
+
+---
+
+## Railway (Staging & Production)
+
+Backend jest hostowany na [Railway](https://railway.app).
+
+### Środowiska
+
+| Środowisko    | Branch    | Deploy                   |
+|---------------|-----------|--------------------------|
+| `staging`     | `staging` | Auto po każdym push'u    |
+| `production`  | `main`    | Manualnie po weryfikacji |
+
+### Konfiguracja dla nowego dewelopera backendu
+
+1. Poproś team leadera o dostęp do projektu Railway
+2. Pobierz ze swojego konta Railway **API Token**
+3. Pobierz od team leadera:
+    - `RAILWAY_STAGING_SERVICE_ID`
+    - `RAILWAY_STAGING_ENVIRONMENT_ID`
+4. Dodaj wszystkie trzy do swojego `.env`
+
+### GitHub Secrets (team leader)
+
+W repozytorium → Settings → Secrets and variables → Actions dodaj:
+
+| Secret                           | Opis                             |
+|----------------------------------|----------------------------------|
+| `RAILWAY_TOKEN`                  | Token Railway dla GitHub Actions |
+| `RAILWAY_STAGING_SERVICE_ID`     | ID serwisu staging'u             |
+| `RAILWAY_STAGING_ENVIRONMENT_ID` | ID środowiska staging'u          |
+
 ---
 
 ## API
@@ -358,4 +444,3 @@ Wstępny diagram struktury bazy danych. Z czasem będą tu dodawane kolejne rela
 | `text16`     | 16sp    | Normal   | Główny tekst czytany, akapity    |
 | `text14`     | 14sp    | Normal   | Mniejszy tekst, opisy pomocnicze |
 | `label16`    | 16sp    | SemiBold | Tekst przycisków, ważne etykiety |
-

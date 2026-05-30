@@ -132,61 +132,51 @@ PostgreSQL (database)
 
 ```
 ReadySetGo/
-├── .github/
-│   └── workflows/
-│       ├── ci.yml                  # Build + testy na PR
-│       └── deploy-staging.yml      # Auto-deploy na staging po merge'u
-├── backend/          # Ktor REST API + JDBC + PostgreSQL
-│   ├── docker/       # Docker Compose + database setup
-│   │   ├── docker-compose.yml  # PostgreSQL 16 container
-│   │   ├── seed.ps1            # Seed database
-│   │   ├── start-db.ps1        # Start database
-│   │   └── stop-db.ps1         # Stop database
-│   ├── scripts/      # Skrypty deploymentu
-│   │   ├── deploy-staging.ps1  # Manualny deploy na staging (Windows)
-│   │   └── deploy-staging.sh   # Manualny deploy na staging (Linux/Mac)
-│   ├── src/
-│   │   └── main/
-│   │       ├── kotlin/com/ReadySetGo/backend/
-│   │       │   ├── config/       # DB config, HikariCP connection pool
-│   │       │   ├── controller/   # REST endpoints
-│   │       │   ├── repository/   # JDBC queries
-│   │       │   ├── model/        # Domain models
-│   │       │   └── service/      # Business logic
-│   │       └── resources/
-│   │           ├── application.conf
-│   │           └── logback.xml
-│   ├── Dockerfile        # Docker image dla Railway'a
-│   ├── railway.toml      # Konfiguracja Railway'a
+├── .github/                  # Konfiguracja CI/CD (GitHub Actions)
+├── backend/                  # Ktor REST API + JDBC + PostgreSQL
+│   ├── docker/               # Docker Compose + skrypty bazy danych (init.sql)
+│   ├── scripts/              # Skrypty wdrożeniowe (deploy)
+│   ├── src/main/
+│   │   ├── kotlin/com/ReadySetGo/backend/
+│   │   │   ├── config/       # Konfiguracja bazy i puli połączeń
+│   │   │   ├── controller/   # Endpointy REST API
+│   │   │   ├── model/        # Modele domenowe
+│   │   │   ├── repository/   # Zapytania JDBC
+│   │   │   ├── service/      # Logika biznesowa
+│   │   │   ├── Application.kt
+│   │   │   └── Seeder.kt
+│   │   └── resources/        # application.conf, logback.xml
+│   ├── Dockerfile            # Konfiguracja obrazu Docker
+│   ├── railway.toml          # Konfiguracja środowiska produkcyjnego
 │   └── build.gradle.kts
 │
-├── frontend/          # Android app (MVVM + Hilt + Retrofit)
-│   ├── app/
-│   │   └── src/main/
-│   │       ├── kotlin/com/ReadySetGo/frontend/
-│   │       │   ├── data/
-│   │       │   │   ├── remote/        # Retrofit API interfaces
-│   │       │   │   ├── repository/    # Repository pattern (bridge VM ↔ API)
-│   │       │   │   └── model/         # DTOs / UI models
-│   │       │   ├── ui/
-│   │       │   │   ├── theme/
-│   │       │   │   │   ├── Theme.kt
-│   │       │   │   │   └── Typography.kt  # Czcionki i typografia
-│   │       │   │   ├── home/          # HomeFragment + HomeViewModel
-│   │       │   │   └── detail/        # DetailFragment + DetailViewModel
-│   │       │   ├── di/                # Hilt modules
-│   │       │   └── utils/             # Extensions, constants
-│   │       └── res/
-│   │           ├── layout/
-│   │           ├── navigation/
-│   │           └── values/
+├── frontend/                 # Android App (MVVM + Hilt + Retrofit)
+│   ├── app/src/main/
+│   │   ├── java/com/ReadySetGo/frontend/
+│   │   │   ├── data/         # Repozytoria, modele, API (Retrofit)
+│   │   │   ├── di/           # Moduły wstrzykiwania zależności (Hilt)
+│   │   │   ├── ui/           # Ekrany i komponenty interfejsu
+│   │   │   │   ├── auth/
+│   │   │   │   ├── components/
+│   │   │   │   ├── detail/
+│   │   │   │   ├── home/
+│   │   │   │   ├── journal/
+│   │   │   │   ├── navigation/
+│   │   │   │   ├── onboarding/
+│   │   │   │   ├── profile/
+│   │   │   │   └── theme/
+│   │   │   └── utils/        # Klasy pomocnicze (MainActivity.kt)
+│   │   ├── res/              # Zasoby aplikacji (drawable, values, xml)
+│   │   └── AndroidManifest.xml
 │   └── build.gradle.kts
-├── shared/           # Shared DTOs between backend and frontend
-│   └── src/main/kotlin/com/ReadySetGo/shared/dto/
 │
-├── .env.example      # Template dla zmiennych środowiskowych
-├── .gitignore
-├── d1.png            # Diagram przykładu użycia
+├── shared/                   # Udostępniane zasoby (obecnie puste)
+│   └── .gitkeep
+│
+├── .env.example              # Szablon zmiennych środowiskowych
+├── d1.png                    # Diagram przykładu użycia
+├── erd.png                   # Schemat bazy danych (ERD)
+├── pull_request_template.md  # Szablon opisów dla PR
 └── README.md
 ```
 
@@ -444,3 +434,4 @@ Wstępny diagram struktury bazy danych. Z czasem będą tu dodawane kolejne rela
 | `text16`     | 16sp    | Normal   | Główny tekst czytany, akapity    |
 | `text14`     | 14sp    | Normal   | Mniejszy tekst, opisy pomocnicze |
 | `label16`    | 16sp    | SemiBold | Tekst przycisków, ważne etykiety |
+

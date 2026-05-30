@@ -41,6 +41,7 @@ fun MainAppScaffold(
     onTabSelected: (String) -> Unit,
     onBackClick: () -> Unit,
     onStatsClick: () -> Unit,
+    title: String = "TBD",
     content: @Composable (PaddingValues) -> Unit
 ) {
     Box(
@@ -84,7 +85,7 @@ fun MainAppScaffold(
 
                     // Tekst oraz podświetlenie gradientowe dopasowują się automatycznie do wyrazu
                     HighlightedTitle(
-                        text = "TBD"
+                        text = title
                     )
 
                     Spacer(modifier = Modifier.weight(1f))

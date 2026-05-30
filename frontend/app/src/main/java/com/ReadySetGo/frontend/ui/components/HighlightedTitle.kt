@@ -30,8 +30,8 @@ fun HighlightedTitle(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(14.dp)
-                .offset(y = (-7).dp)
+                .height(8.dp)
+                .offset(y = (-4).dp)
                 .background(
                     brush = Brush.horizontalGradient(
                         colors = listOf(
@@ -39,12 +39,12 @@ fun HighlightedTitle(
                             Color(0xFFBBF246)
                         )
                     ),
-                    shape = RoundedCornerShape(4.dp)
+                    shape = RoundedCornerShape(3.dp)
                 )
         )
         Text(
             text = text,
-            fontSize = 32.sp,
+            fontSize = 18.sp,
             fontWeight = FontWeight.Bold,
             color = Color.Black
         )

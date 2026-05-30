@@ -45,6 +45,10 @@ fun Calendar(
     }
 
     val daysInMonth = currentMonth.lengthOfMonth()
+    val firstDayOfWeek = currentMonth.atDay(1).dayOfWeek
+    val firstDayOfWeekIndex = firstDayOfWeek.value % 7 // 0 = Sunday, 1 = Monday, ... 6 = Saturday
+    val totalCells = firstDayOfWeekIndex + daysInMonth
+    val rowCount = (totalCells + 6) / 7
 
     Box(
         modifier = modifier
@@ -105,7 +109,7 @@ fun Calendar(
             Spacer(modifier = Modifier.height(24.dp))
 
             Row(modifier = Modifier.fillMaxWidth()) {
-                listOf("SAN", "MON", "TUE", "WED", "THU", "FRI", "SAT").forEach { day ->
+                listOf("SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT").forEach { day ->
                     Text(
                         text = day,
                         modifier = Modifier.weight(1f),
@@ -121,10 +125,11 @@ fun Calendar(
             Column(
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                repeat(5) { row ->
+                repeat(rowCount) { row ->
                     Row(modifier = Modifier.fillMaxWidth()) {
                         repeat(7) { column ->
-                            val day = row * 7 + column + 1
+                            val cellIndex = row * 7 + column
+                            val day = cellIndex - firstDayOfWeekIndex + 1
 
                             Box(
                                 modifier = Modifier
@@ -132,7 +137,7 @@ fun Calendar(
                                     .height(28.dp),
                                 contentAlignment = Alignment.Center
                             ) {
-                                if (day <= daysInMonth) {
+                                if (day in 1..daysInMonth) {
                                     val date = currentMonth.atDay(day)
                                     val isSelected = date == selectedDate
 

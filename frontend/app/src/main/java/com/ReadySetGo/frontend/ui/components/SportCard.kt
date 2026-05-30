@@ -1,5 +1,6 @@
 package com.ReadySetGo.frontend.ui.components
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
@@ -15,48 +16,45 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.ReadySetGo.frontend.R
 import com.ReadySetGo.frontend.ui.theme.DarkNavy
-
 /**
- * Karta aktywności/sportu używana w widokach wyboru dyscypliny.
- * Wyświetla placeholder ikony oraz nazwę aktywności.
- *
- * @param title Nazwa aktywności.
- * @param modifier Modyfikator.
+ * Karta sportu używana w widoku wyboru dyscypliny.
+ * Wyświetla ikonę sportu oraz nazwę aktywności w harmonizowanym stylu UI.
  */
+data class SportItem(
+    val name: String,
+    val iconRes: Int
+)
+
 @Composable
 fun SportCard(
     title: String,
+    iconRes: Int,
     modifier: Modifier = Modifier
 ) {
     Box(
         modifier = modifier
             .width(110.dp)
             .height(110.dp)
-            .shadow(
-                elevation = 4.dp,
-                shape = RoundedCornerShape(14.dp)
-            )
+            .shadow(4.dp, RoundedCornerShape(14.dp))
             .clip(RoundedCornerShape(14.dp))
             .background(Color(0xFFFAFCF4))
-            .border(
-                width = 1.dp,
-                color = Color(0xFFE6E6E6),
-                shape = RoundedCornerShape(14.dp)
-            )
+            .border(1.dp, Color(0xFFE6E6E6), RoundedCornerShape(14.dp))
             .padding(8.dp)
     ) {
-        Box(
+        Image(
+            painter = painterResource(id = iconRes),
+            contentDescription = title,
             modifier = Modifier
                 .size(52.dp)
                 .align(Alignment.TopCenter)
                 .padding(top = 8.dp)
-                .clip(RoundedCornerShape(12.dp))
-                .background(Color(0xFFEAEAEA))
         )
 
         Box(
@@ -66,11 +64,7 @@ fun SportCard(
                 .height(26.dp)
                 .clip(RoundedCornerShape(9.dp))
                 .background(Color(0xFFEAF8C9))
-                .border(
-                    width = 1.dp,
-                    color = Color(0xFFBBF246),
-                    shape = RoundedCornerShape(9.dp)
-                ),
+                .border(1.dp, Color(0xFFBBF246), RoundedCornerShape(9.dp)),
             contentAlignment = Alignment.Center
         ) {
             Text(
@@ -85,16 +79,9 @@ fun SportCard(
     }
 }
 
-/**
- * Siatka kart sportów.
- * Automatycznie tworzy odpowiednią liczbę rzędów na podstawie liczby elementów.
- *
- * @param sports Lista nazw sportów do wyświetlenia.
- * @param modifier Modyfikator.
- */
 @Composable
 fun SportCardGrid(
-    sports: List<String>,
+    sports: List<SportItem>,
     modifier: Modifier = Modifier
 ) {
     LazyVerticalGrid(
@@ -105,7 +92,10 @@ fun SportCardGrid(
         userScrollEnabled = false
     ) {
         items(sports) { sport ->
-            SportCard(title = sport)
+            SportCard(
+                title = sport.name,
+                iconRes = sport.iconRes
+            )
         }
     }
 }
@@ -115,15 +105,14 @@ fun SportCardGrid(
 private fun SportCardGridPreview() {
     SportCardGrid(
         sports = listOf(
-            "Basketball",
-            "Tennis",
-            "Basketball",
-            "Basketball",
-            "Basketball",
-            "Basketball",
-            "Basketball",
-            "Basketball",
-            "Basketball"
+            SportItem("Basketball", R.drawable.ic_basketball),
+            SportItem("Biking", R.drawable.ic_biking),
+            SportItem("Table Tennis", R.drawable.ic_tabletennis),
+            SportItem("Running", R.drawable.ic_running),
+            SportItem("Lifting", R.drawable.ic_lifting),
+            SportItem("Football", R.drawable.ic_football),
+            SportItem("Volleyball", R.drawable.ic_volleyball),
+            SportItem("Badminton", R.drawable.ic_badminton)
         ),
         modifier = Modifier
             .background(Color(0xFFF3FAE8))

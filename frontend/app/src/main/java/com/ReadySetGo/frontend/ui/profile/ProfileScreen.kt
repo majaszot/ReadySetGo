@@ -13,12 +13,20 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.ReadySetGo.frontend.ui.components.AvatarPicker
+import com.ReadySetGo.frontend.ui.components.GlassyBottomBar
 import com.ReadySetGo.frontend.ui.components.ProfileHeaderSection
 import com.ReadySetGo.frontend.ui.components.ProfileLevelCard
 import com.ReadySetGo.frontend.ui.components.ProfileStatsCard
-
+/**
+ * Główny ekran profilu użytkownika.
+ * Łączy sekcję nagłówka, wybór avatara, kartę poziomu gracza,
+ * statystyki postępu oraz dolny pasek nawigacji.
+ */
 @Composable
-fun ProfileScreen() {
+fun ProfileScreen(
+    currentTab: String = "Profile",
+    onTabSelected: (String) -> Unit = {}
+) {
     var selectedAvatarIndex by remember { mutableStateOf<Int?>(null) }
     var showAvatarPicker by remember { mutableStateOf(false) }
 
@@ -34,6 +42,7 @@ fun ProfileScreen() {
             modifier = Modifier
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
+                .padding(bottom = 95.dp)
         ) {
             Box(
                 modifier = Modifier
@@ -93,6 +102,12 @@ fun ProfileScreen() {
                     .zIndex(99f)
             )
         }
+
+        GlassyBottomBar(
+            currentTab = currentTab,
+            onTabSelected = onTabSelected,
+            modifier = Modifier.align(Alignment.BottomCenter)
+        )
     }
 }
 

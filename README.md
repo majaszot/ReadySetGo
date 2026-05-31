@@ -340,31 +340,42 @@ Projekt używa GitHub Actions do automatycznego budowania i deploymentu.
 
 ### Workflows
 
-| Workflow               | Wyzwalacz                  | Działanie                                     |
-|------------------------|----------------------------|-----------------------------------------------|
-| `ci.yml`               | PR do `staging` lub `main` | Buduje backend i frontend, uruchamia testy    |
-| `deploy-staging.yml`   | Push do `staging`          | Triggeruje redeploy na Railway staging        |
+| Workflow                 | Wyzwalacz                         | Działanie                                    |
+|--------------------------|-----------------------------------|----------------------------------------------|
+| `ci.yml`                 | Każdy commit do otwartego PR      | Buduje backend i frontend, uruchamia testy   |
+| `deploy-staging.yml`     | Merge PR do brancha `staging`     | Build + testy + deploy na Railway staging    |
+| `deploy-production.yml`  | Manualny trigger w GitHub Actions | Build + testy + deploy na Railway production |
 
 ### Flow pracy zespołu
 
 ```
 feature/nazwa-zadania
-        ↓ PR → staging
+        ↓ każdy commit do PR
 CI sprawdza build + testy
-        ↓ merge
-GitHub Actions triggeruje Railway deploy
-        ↓ weryfikacja
-PR staging → main
-        ↓ merge
-Railway deployuje na produkcję (manualnie)
+        ↓ PR + merge do staging
+GitHub Actions: build + testy + deploy na staging
+        ↓ weryfikacja na staging
+PR staging -> main + merge
+        ↓ manualny trigger w GitHub Actions
+wpisz DEPLOY jako potwierdzenie
+        ↓
+build + testy + deploy na production
 ```
 
-### Manualne deployowanie na staging
+### Manualne deployowanie na staging (lokalnie)
 
 ```powershell
 cd backend/scripts
 .\deploy-staging.ps1
 ```
+
+### Manualne deployowanie na production (GitHub Actions)
+
+1. Przejdź do GitHub repo → zakładka **Actions**
+2. Wybierz **Deploy to Production**
+3. Kliknij **Run workflow**
+4. Wpisz `DEPLOY` w polu potwierdzenia
+5. Kliknij **Run workflow**
 
 Wymaga zmiennych `RAILWAY_TOKEN`, `RAILWAY_STAGING_SERVICE_ID`, `RAILWAY_STAGING_ENVIRONMENT_ID` w `.env`.
 
@@ -376,10 +387,10 @@ Backend jest hostowany na [Railway](https://railway.app).
 
 ### Środowiska
 
-| Środowisko    | Branch    | Deploy                   |
-|---------------|-----------|--------------------------|
-| `staging`     | `staging` | Auto po każdym push'u    |
-| `production`  | `main`    | Manualnie po weryfikacji |
+| Środowisko    | Branch    | Deploy                                    |
+|---------------|-----------|-------------------------------------------|
+| `staging`     | `staging` | Auto po merge'u PR'a (via GitHub Actions) |
+| `production`  | `main`    | Manualnie przez GitHub Actions            |
 
 ### Konfiguracja dla nowego dewelopera backendu
 
@@ -392,13 +403,15 @@ Backend jest hostowany na [Railway](https://railway.app).
 
 ### GitHub Secrets (team leader)
 
-W repozytorium → Settings → Secrets and variables → Actions dodaj:
+W repozytorium → Settings → Secrets and variables → Actions:
 
-| Secret                           | Opis                             |
-|----------------------------------|----------------------------------|
-| `RAILWAY_TOKEN`                  | Token Railway dla GitHub Actions |
-| `RAILWAY_STAGING_SERVICE_ID`     | ID serwisu staging'u             |
-| `RAILWAY_STAGING_ENVIRONMENT_ID` | ID środowiska staging'u          |
+| Secret                              | Opis                             |
+|-------------------------------------|----------------------------------|
+| `RAILWAY_TOKEN`                     | Token Railway dla GitHub Actions |
+| `RAILWAY_STAGING_SERVICE_ID`        | ID serwisu staging'u             |
+| `RAILWAY_STAGING_ENVIRONMENT_ID`    | ID środowiska staging'u          |
+| `RAILWAY_PRODUCTION_SERVICE_ID`     | ID serwisu production            |
+| `RAILWAY_PRODUCTION_ENVIRONMENT_ID` | ID środowiska production         |
 
 ---
 

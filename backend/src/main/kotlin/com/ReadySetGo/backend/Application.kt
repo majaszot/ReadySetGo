@@ -49,13 +49,13 @@ fun Application.module() {
         else       -> "remote"
     }
 
-    log.info("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+    log.info("---------------------------------------------------")
     log.info("  Mode     : $modeLabel")
     log.info("  DB Host  : $dbHost")
     log.info("  DB Port  : $dbPort")
     log.info("  DB Name  : $dbName")
     log.info("  DB User  : $dbUser")
-    log.info("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+    log.info("---------------------------------------------------")
 
     // ── Plugins ──────────────────────────────────────────────────
     install(ContentNegotiation) {

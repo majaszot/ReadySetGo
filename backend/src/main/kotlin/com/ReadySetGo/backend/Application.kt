@@ -19,17 +19,43 @@ fun Application.module() {
     // ── Load environment ─────────────────────────────────────────
     val isRailway = System.getenv("RAILWAY_ENVIRONMENT") != null
 
+    val env = if (!isRailway) {
+        dotenv {
+            directory = "../"
+            ignoreIfMissing = false
+        }
+    } else null
+
     val getEnv: (String) -> String = { key ->
         if (isRailway) {
-            System.getenv(key) ?: throw IllegalStateException("Missing env var: $key")
+            System.getenv(key) ?: throw IllegalStateException("Missing Railway env var: $key")
         } else {
-            val env = dotenv {
-                directory = "../"
-                ignoreIfMissing = false
-            }
-            env[key]
+            env?.get(key) ?: throw IllegalStateException("Missing .env var: $key")
         }
     }
+
+    // ── Mode selection ───────────────────────────────────────────
+    val localMode = !isRailway && getEnv("LOCAL_MODE") == "true"
+
+    val dbHost     = if (localMode) getEnv("LOCAL_DB_HOST")      else getEnv("PRODUCTION_DB_HOST")
+    val dbPort     = if (localMode) getEnv("LOCAL_DB_PORT")      else getEnv("PRODUCTION_DB_PORT")
+    val dbName     = if (localMode) getEnv("LOCAL_DB_NAME")      else getEnv("PRODUCTION_DB_NAME")
+    val dbUser     = if (localMode) getEnv("LOCAL_DB_USER")      else getEnv("PRODUCTION_DB_USER")
+    val dbPassword = if (localMode) getEnv("LOCAL_DB_PASSWORD")  else getEnv("PRODUCTION_DB_PASSWORD")
+
+    val modeLabel = when {
+        isRailway  -> "railway"
+        localMode  -> "local"
+        else       -> "remote"
+    }
+
+    log.info("---------------------------------------------------")
+    log.info("  Mode     : $modeLabel")
+    log.info("  DB Host  : $dbHost")
+    log.info("  DB Port  : $dbPort")
+    log.info("  DB Name  : $dbName")
+    log.info("  DB User  : $dbUser")
+    log.info("---------------------------------------------------")
 
     // ── Plugins ──────────────────────────────────────────────────
     install(ContentNegotiation) {
@@ -38,12 +64,14 @@ fun Application.module() {
 
     // ── Database ─────────────────────────────────────────────────
     val dataSource = HikariDataSource(HikariConfig().apply {
-        jdbcUrl         = "jdbc:postgresql://${getEnv("DB_HOST")}:${getEnv("DB_PORT")}/${getEnv("DB_NAME")}"
-        username        = getEnv("DB_USER")
-        password        = getEnv("DB_PASSWORD")
+        jdbcUrl         = "jdbc:postgresql://$dbHost:$dbPort/$dbName"
+        username        = dbUser
+        password        = dbPassword
         driverClassName = "org.postgresql.Driver"
         maximumPoolSize = 5
     })
+
+    log.info("Database pool initialized → ${dataSource.jdbcUrl}")
 
     // ── Services ─────────────────────────────────────────────────
     val userRepository = UserRepository(dataSource)
@@ -66,7 +94,8 @@ fun Application.module() {
             call.respond(
                 mapOf(
                     "status"   to "ok",
-                    "database" to if (dbOk) "connected" else "unreachable"
+                    "database" to if (dbOk) "connected" else "unreachable",
+                    "mode"     to modeLabel
                 )
             )
         }

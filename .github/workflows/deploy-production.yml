@@ -1,14 +1,27 @@
-name: Deploy to Staging
+name: Deploy to Production
 
 on:
-  push:
-    branches:
-      - staging
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: 'Type DEPLOY to confirm production deployment'
+        required: true
 
 jobs:
+  validate:
+    name: Validate confirmation
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check confirmation
+        if: ${{ github.event.inputs.confirm != 'DEPLOY' }}
+        run: |
+          echo "Confirmation failed. Type DEPLOY to confirm."
+          exit 1
+
   build-and-test:
     name: Build & Test
     runs-on: ubuntu-latest
+    needs: validate
     defaults:
       run:
         working-directory: backend
@@ -42,18 +55,18 @@ jobs:
         run: ./gradlew test --no-daemon
 
   deploy:
-    name: Deploy to Railway Staging
+    name: Deploy to Railway Production
     runs-on: ubuntu-latest
     needs: build-and-test
 
     steps:
-      - name: Trigger Railway staging deploy
+      - name: Trigger Railway production deploy
         run: |
           curl -X POST \
             -H "Authorization: Bearer ${{ secrets.RAILWAY_TOKEN }}" \
             -H "Content-Type: application/json" \
-            -d "{\"query\": \"mutation { serviceInstanceRedeploy(environmentId: \\\"${{ secrets.RAILWAY_STAGING_ENVIRONMENT_ID }}\\\", serviceId: \\\"${{ secrets.RAILWAY_STAGING_SERVICE_ID }}\\\") }\"}" \
+            -d "{\"query\": \"mutation { serviceInstanceRedeploy(environmentId: \\\"${{ secrets.RAILWAY_PRODUCTION_ENVIRONMENT_ID }}\\\", serviceId: \\\"${{ secrets.RAILWAY_PRODUCTION_SERVICE_ID }}\\\") }\"}" \
             https://backboard.railway.app/graphql/v2
 
       - name: Notify success
-        run: echo "Staging deploy triggered successfully"
+        run: echo "Production deploy triggered successfully"
